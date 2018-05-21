@@ -66,12 +66,12 @@ void Game::input()
 			gamestate = END;
 		}
 		//get Keybord input
-		else if (event.type == sf::Event::KeyReleased)
+		else if (event.type == sf::Event::KeyPressed)
 		{
 			//change z-Level
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
 			{
-				if (activeZLevel < mapSize[3])
+				if (activeZLevel < mapSize[2])
 				{
 					activeZLevel++;
 				}
