@@ -6,6 +6,7 @@ class Map
 {
 public:
 	Map();
+	Map(size_t mapSize[3]);
 	~Map();
 
 	void draw(RenderQue &que, size_t zLevel);

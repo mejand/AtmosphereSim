@@ -23,6 +23,7 @@ private:
 	GameState gamestate;
 
 	Map map; //Game Map
+	size_t mapSize[3]; //size of the map in x,y,z
 	RenderQue renderque;
 	size_t activeZLevel;
 };

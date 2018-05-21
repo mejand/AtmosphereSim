@@ -12,6 +12,16 @@ Map::Map()
 }
 
 
+Map::Map(size_t mapSize[3])
+{
+	width = mapSize[0];
+	depth = mapSize[1];
+	height = mapSize[2];
+
+	Blocks.resize(width * depth * height, Block());
+}
+
+
 Map::~Map()
 {
 }

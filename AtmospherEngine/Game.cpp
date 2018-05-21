@@ -34,7 +34,15 @@ void Game::setup()
 	//setup Game State
 	gamestate = PLAYING;
 
+	//initiate the size of the map
+	mapSize[0] = 10;
+	mapSize[1] = 10;
+	mapSize[2] = 10;
+
 	activeZLevel = 1;
+
+	//initiate the map
+	map = Map(mapSize);
 
 	/*Debug - add some gas to the Map*/
 	map.setGas(1, 1, 1, 0, 200);
@@ -56,6 +64,25 @@ void Game::input()
 		{
 			window.close();
 			gamestate = END;
+		}
+		//get Keybord input
+		else if (event.type == sf::Event::KeyReleased)
+		{
+			//change z-Level
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
+			{
+				if (activeZLevel < mapSize[3])
+				{
+					activeZLevel++;
+				}
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageDown))
+			{
+				if (activeZLevel > 0)
+				{
+					activeZLevel--;
+				}
+			}
 		}
 	}
 }
