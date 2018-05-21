@@ -33,6 +33,15 @@ void Game::setup()
 
 	//setup Game State
 	gamestate = PLAYING;
+
+	activeZLevel = 1;
+
+	/*Debug - add some gas to the Map*/
+	map.setGas(1, 1, 0, 0, 200);
+	map.setGas(2, 2, 1, 0, 200);
+	map.setGas(3, 3, 1, 0, 100);
+	map.setGas(3, 0, 1, 0, 200);
+	map.setGas(0, 4, 1, 0, 200);
 }
 
 
@@ -62,7 +71,9 @@ void Game::draw()
 {
 	window.clear();
 
-	//window.draw(renderque);
+	map.draw(renderque, activeZLevel);
+
+	window.draw(renderque);
 
 	window.display();
 }

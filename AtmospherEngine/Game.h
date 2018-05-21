@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+#include "Map.h"
 
 
 enum GameState { END, PLAYING, PAUSED };
@@ -20,5 +21,9 @@ private:
 
 	sf::RenderWindow window;
 	GameState gamestate;
+
+	Map map; //Game Map
+	RenderQue renderque;
+	size_t activeZLevel;
 };
 
