@@ -31,13 +31,13 @@ void Map::draw(RenderQue &que, size_t zLevel)
 
 			//add the top square
 			temp[0].position = sf::Vector2f(x * GridSize, y * GridSize);
-			temp[1].position = sf::Vector2f(x + GridSize, y * GridSize);
-			temp[2].position = sf::Vector2f(x * GridSize, y + GridSize);
+			temp[1].position = sf::Vector2f(x * GridSize + GridSize, y * GridSize);
+			temp[2].position = sf::Vector2f(x * GridSize, y * GridSize + GridSize);
 
 			//add the bottom square
-			temp[3].position = sf::Vector2f(x + GridSize, y + GridSize);
-			temp[4].position = sf::Vector2f(x * GridSize, y + GridSize);
-			temp[5].position = sf::Vector2f(x + GridSize, y * GridSize);
+			temp[3].position = sf::Vector2f(x * GridSize + GridSize, y * GridSize + GridSize);
+			temp[4].position = sf::Vector2f(x * GridSize, y * GridSize + GridSize);
+			temp[5].position = sf::Vector2f(x * GridSize + GridSize, y * GridSize);
 
 			//set color of vertices
 			for (size_t i = 0; i < 6; i++)
