@@ -71,7 +71,7 @@ void Game::input()
 			//change z-Level
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
 			{
-				if (activeZLevel < mapSize[2])
+				if (activeZLevel < mapSize[2] - 1)
 				{
 					activeZLevel++;
 				}
@@ -90,7 +90,7 @@ void Game::input()
 
 void Game::logic()
 {
-
+	map.logic();
 }
 
 
