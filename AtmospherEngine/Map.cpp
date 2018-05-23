@@ -111,7 +111,7 @@ void Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
 	}
 
 	//check if there is enough space left
-	if (Blocks[index].N[type] + N_new + sum <= Blocks[index].N_max)
+	if ((Blocks[index].N[type] + N_new + sum) <= Blocks[index].N_max && (Blocks[index].N[type] + N_new) > 0)
 	{
 		//add the gas
 		Blocks[index].N[type] += N_new;
@@ -121,11 +121,22 @@ void Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
 	}
 	else
 	{
-		//add only enough to fill the Block
-		Blocks[index].N[type] += Blocks[index].N_max - Blocks[index].N_t;
+		if (N_new > 0)
+		{
+			//add only enough to fill the Block
+			Blocks[index].N[type] += Blocks[index].N_max - Blocks[index].N_t;
 
-		//update N_t
-		Blocks[index].N_t = Blocks[index].N_max;
+			//update N_t
+			Blocks[index].N_t = Blocks[index].N_max;
+		}
+		else
+		{
+			//set N to 0
+			Blocks[index].N[type] = 0;
+
+			//update N_t
+			Blocks[index].N_t = sum;
+		}
 	}
 }
 
@@ -179,8 +190,8 @@ void Map::gasSim()
 							//only change N if dN negative -> avoid back and forth
 							if (dN[n] < 0)
 							{
-								addGas(x, y, z, i, 10); //addGas() -> currently buggy: eats gas if there is not enough space in the target block
-								addGas(x + xN[n], y + yN[n], z + zN[n], i, -10);
+								addGas(x, y, z, i, 1); //addGas() -> currently buggy: eats gas if there is not enough space in the target block
+								addGas(x + xN[n], y + yN[n], z + zN[n], i, -1);
 							}
 						}
 					}
