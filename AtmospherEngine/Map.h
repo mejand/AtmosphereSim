@@ -11,7 +11,6 @@ public:
 
 	void draw(RenderQue &que, size_t zLevel); //add the map to the renderque
 	void setGas(size_t x, size_t y, size_t z, size_t type, unsigned int N_new);
-	void addGas(size_t x, size_t y, size_t z, size_t type, int N_new);
 	void logic(); //advance one timestep
 
 private:
@@ -20,5 +19,6 @@ private:
 
 	size_t getIndex(size_t x, size_t y, size_t z); //return the index based on the x, y, z coordinates
 	void gasSim(); //gas simulation
+	int addGas(size_t x, size_t y, size_t z, size_t type, int N_new);
 };
 

@@ -96,9 +96,11 @@ void Map::setGas(size_t x, size_t y, size_t z, size_t type, unsigned int N_new)
 }
 
 
-void Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
+int Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
 {
 	size_t index = getIndex(x, y, z);
+
+	int result = 0;
 
 	//calculate N_t for the other gases (without N_t)
 	unsigned int sum = 0;
@@ -128,9 +130,15 @@ void Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
 
 			//update N_t
 			Blocks[index].N_t = Blocks[index].N_max;
+
+			//return the amount of gas that did not fit
+			result = N_new - (Blocks[index].N_max - Blocks[index].N_t);
 		}
 		else
 		{
+			//return the amount of gas that did not fit
+			result = N_new + Blocks[index].N_t;
+
 			//set N to 0
 			Blocks[index].N[type] = 0;
 
@@ -138,6 +146,8 @@ void Map::addGas(size_t x, size_t y, size_t z, size_t type, int N_new)
 			Blocks[index].N_t = sum;
 		}
 	}
+
+	return result;
 }
 
 
@@ -163,6 +173,8 @@ void Map::gasSim()
 	int xN[6] = { 1, -1, 0, 0, 0, 0 }; //offset for x dimension
 	int yN[6] = { 0, 0, 1, -1, 0, 0 }; //offset for y dimension
 	int zN[6] = { 0, 0, 0, 0, 1, -1 }; //offset for z dimension
+
+	int returnGas; //store the amount of gas that did not fit into the target during addGas()
 
 	//iterate through the map
 	for (size_t x = 0; x < width; x++)
@@ -190,8 +202,8 @@ void Map::gasSim()
 							//only change N if dN negative -> avoid back and forth
 							if (dN[n] < 0)
 							{
-								addGas(x, y, z, i, 1); //addGas() -> currently buggy: eats gas if there is not enough space in the target block
-								addGas(x + xN[n], y + yN[n], z + zN[n], i, -1);
+								returnGas = addGas(x, y, z, i, 1);
+								addGas(x + xN[n], y + yN[n], z + zN[n], i, -1 + returnGas);
 							}
 						}
 					}
