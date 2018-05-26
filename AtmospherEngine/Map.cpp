@@ -9,16 +9,32 @@ Map::Map()
 	height = 10;
 
 	Blocks.resize(width * depth * height, Block());
+
+	/*Temporary - replace with number of Gases from GameData*/
+	size_t numGases = 2;
+	/*Temporary - replace with number of Gases from GameData*/
+
+	N_border.resize(numGases);
+	for (size_t i = 0; i < numGases; i++)
+	{
+		N_border[i] = 150; //default the Block to be empty of gas
+	}
 }
 
 
-Map::Map(size_t mapSize[3])
+Map::Map(size_t mapSize[3], size_t numGases, unsigned int gasBorder)
 {
 	width = mapSize[0];
 	depth = mapSize[1];
 	height = mapSize[2];
 
 	Blocks.resize(width * depth * height, Block());
+
+	N_border.resize(numGases);
+	for (size_t i = 0; i < numGases; i++)
+	{
+		N_border[i] = gasBorder; //default the Block to be empty of gas
+	}
 }
 
 
@@ -187,6 +203,11 @@ void Map::gasSim()
 				if (x == 0 || y == 0 || z == 0 || x == width - 1 || y == depth - 1 || z == height - 1) //not optimized!
 				{
 					//handle constant boundary conditions
+					//iterate through the different gas types
+					for (size_t i = 0; i < Blocks[getIndex(x, y, z)].N.size(); i++)
+					{
+						Blocks[getIndex(x, y, z)].N[i] = N_border[i];
+					}
 				}
 				else
 				{

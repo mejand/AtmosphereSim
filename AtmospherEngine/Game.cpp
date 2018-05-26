@@ -42,14 +42,15 @@ void Game::setup()
 	activeZLevel = 1;
 
 	//initiate the map
-	map = Map(mapSize);
+	map = Map(mapSize, 2, 150);
 
-	/*Debug - add some gas to the Map*/
+	/*Debug - add some gas to the Map
 	map.setGas(1, 1, 1, 0, 200);
 	map.setGas(2, 2, 1, 0, 200);
 	map.setGas(3, 3, 1, 0, 200);
 	map.setGas(3, 0, 1, 0, 200);
 	map.setGas(0, 4, 1, 0, 200);
+	*/
 }
 
 
