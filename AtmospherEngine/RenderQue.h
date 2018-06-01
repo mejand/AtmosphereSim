@@ -15,7 +15,7 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	sf::VertexArray m_vertices;
+	sf::VertexArray vertexBuffer[7];
 	sf::Texture m_texture;
-	size_t n; //number of current vertices in the qeue
+	size_t n[7]; //number of current vertices in the qeue
 };

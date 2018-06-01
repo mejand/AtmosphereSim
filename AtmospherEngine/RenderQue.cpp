@@ -4,9 +4,18 @@
 
 RenderQue::RenderQue()
 {
-	n = 0;
+	for (size_t i = 0; i < 7; i++)
+	{
+		n[i] = 0;
+	}
 
-	m_vertices.setPrimitiveType(sf::Triangles);
+	vertexBuffer[0].setPrimitiveType(sf::Points);
+	vertexBuffer[1].setPrimitiveType(sf::Lines);
+	vertexBuffer[2].setPrimitiveType(sf::LineStrip);
+	vertexBuffer[3].setPrimitiveType(sf::Triangles);
+	vertexBuffer[4].setPrimitiveType(sf::TriangleStrip);
+	vertexBuffer[5].setPrimitiveType(sf::TriangleFan);
+	vertexBuffer[6].setPrimitiveType(sf::Quads);
 }
 
 
@@ -17,46 +26,73 @@ RenderQue::~RenderQue()
 
 void RenderQue::add(sf::VertexArray &input)
 {
-	//check if the input contains triangles
-	if (input.getPrimitiveType() != sf::Triangles)
+	//check what type of vertex array is being added
+	size_t type = 0;
+	if (input.getPrimitiveType() == sf::Triangles)
 	{
-		return;
+		type = 3;
+	}
+	else if (input.getPrimitiveType() == sf::LineStrip)
+	{
+		type = 2;
+	}
+	else if (input.getPrimitiveType() == sf::Lines)
+	{
+		type = 1;
+	}
+	else if (input.getPrimitiveType() == sf::TriangleStrip)
+	{
+		type = 4;
+	}
+	else if (input.getPrimitiveType() == sf::TriangleFan)
+	{
+		type = 5;
+	}
+	else if (input.getPrimitiveType() == sf::Quads)
+	{
+		type = 6;
 	}
 
 	//calculate the difference between the space left and the size of the input
-	int diff = (int(m_vertices.getVertexCount()) - int(n)) - int(input.getVertexCount());
+	int diff = (int(vertexBuffer[type].getVertexCount()) - int(n[type])) - int(input.getVertexCount());
 
 	//if difference is negative: resize the qeue
 	if (diff < 0)
 	{
-		m_vertices.resize(n - diff);
+		vertexBuffer[type].resize(n[type] - diff);
 	}
 
 	//add the input to the qeue
 	for (size_t i = 0; i < input.getVertexCount(); i++)
 	{
-		m_vertices[n + i] = input[i];
+		vertexBuffer[type][n[type] + i] = input[i];
 	}
 
 	//add to n
-	n += input.getVertexCount();
+	n[type] += input.getVertexCount();
 }
 
 
 void RenderQue::prepare()
 {
 	//check if the renderqeue has empty spots left
-	if (n < m_vertices.getVertexCount())
+	for (size_t i = 0; i < 7; i++)
 	{
-		m_vertices.resize(n);
+		if (n[i] < vertexBuffer[i].getVertexCount())
+		{
+			vertexBuffer[i].resize(n[i]);
+		}
 	}
 }
 
 
 void RenderQue::reset()
 {
-	n = 0;
-	m_vertices.clear();
+	for (size_t i = 0; i < 7; i++)
+	{
+		n[i] = 0;
+		vertexBuffer[i].clear();
+	}
 }
 
 
@@ -69,5 +105,8 @@ void RenderQue::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.texture = &m_texture;
 
 	// draw the vertex array
-	target.draw(m_vertices, states);
+	for (size_t i = 0; i < 7; i++)
+	{
+		target.draw(vertexBuffer[i], states);
+	}
 }
